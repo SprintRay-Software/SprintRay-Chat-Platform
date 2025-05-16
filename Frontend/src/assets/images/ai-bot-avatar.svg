@@ -1,0 +1,24 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Avatar-base" clip-path="url(#clip0_14196_146274)">
+<rect width="20" height="20" fill="white" fill-opacity="0.08"/>
+<g id="Vector" filter="url(#filter0_d_14196_146274)">
+<path d="M4.61882 13.5H2.5L8.32675 6.5L14.0652 13.5H12.0347L8.32675 9L4.61882 13.5Z" fill="white" fill-opacity="0.65" shape-rendering="crispEdges"/>
+<path d="M16.5 6.5H14.6739V13.5H16.5V6.5Z" fill="white" fill-opacity="0.65" shape-rendering="crispEdges"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_14196_146274" x="-9.55128" y="-4.34615" width="38.1026" height="31.1026" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1.20513"/>
+<feGaussianBlur stdDeviation="6.02564"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_14196_146274"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_14196_146274" result="shape"/>
+</filter>
+<clipPath id="clip0_14196_146274">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

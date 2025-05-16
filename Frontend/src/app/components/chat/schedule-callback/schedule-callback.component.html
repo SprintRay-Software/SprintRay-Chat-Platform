@@ -1,0 +1,6 @@
+<div class="schedule-wrapper">
+    <div class="schedule-wrapper-subTitle">{{ 'general.letUsScheduleCallBack' | translate }}</div>
+    <div class="schedule-wrapper-iframe" *ngIf="callbackUrl">
+        <iframe [src]="callbackUrl" width="100%" height="100%"></iframe>
+    </div>
+</div>

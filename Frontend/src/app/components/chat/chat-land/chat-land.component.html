@@ -1,0 +1,13 @@
+<div class="chat-land__container">
+    <div class="chat-land__icon-beta">
+        <mat-icon svgIcon="sr:chat-land-beta" [inline]="true"></mat-icon>
+    </div>
+
+    <div class="chat-land__hey">
+        <p>{{ 'general.hey' | translate }},&nbsp;{{ (fullName$ | async) ?? '' }}!</p>
+    </div>
+
+    <div class="chat-land__how">
+        <p>{{ 'general.howCanWeHelp' | translate }}</p>
+    </div>
+</div>

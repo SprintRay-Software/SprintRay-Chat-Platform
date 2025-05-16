@@ -1,0 +1,97 @@
+<div class="subTitle">{{ 'general.letGetYouInTouchWithSupportAgentRightAway' | translate }}</div>
+
+<form [formGroup]="ticketForm" class="form">
+    <mat-form-field hideRequiredMarker class="col_span_2">
+        <mat-label>{{ 'general.firstName' | translate }}</mat-label>
+        <input matInput formControlName="firstName" />
+    </mat-form-field>
+
+    <mat-form-field hideRequiredMarker class="col_span_2">
+        <mat-label>{{ 'general.lastName' | translate }}</mat-label>
+        <input matInput formControlName="lastName" />
+    </mat-form-field>
+
+    <mat-form-field hideRequiredMarker class="col_span_4">
+        <mat-label>{{ 'general.company' | translate }}</mat-label>
+        <input matInput formControlName="company" />
+    </mat-form-field>
+
+    <mat-form-field hideRequiredMarker class="col_span_4">
+        <mat-label>{{ 'general.emailAddress' | translate }}</mat-label>
+        <input matInput formControlName="emailAddress" />
+    </mat-form-field>
+
+    <mat-form-field hideRequiredMarker class="col_span_1 flag">
+        <mat-label>{{ 'general.countryCode' | translate }}</mat-label>
+        <img alt="flag" *ngIf="ticketForm.value.countryCode" [src]="countryFlag" />
+        <mat-select formControlName="countryCode">
+            <mat-option [value]="item" *ngFor="let item of countryList">
+                <img [src]="'assets/images/country-flags/' + item.countryFlag + '.svg'" width="24" />
+                <span style="padding-left: 10px">{{ item.phoneCode }}</span>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field hideRequiredMarker class="col_span_3">
+        <mat-label>{{ 'general.phoneNumber' | translate }}</mat-label>
+        <input matInput formControlName="phoneNumber" />
+    </mat-form-field>
+
+    <mat-form-field hideRequiredMarker class="col_span_4">
+        <mat-label>{{ 'general.country' | translate }}</mat-label>
+        <mat-select formControlName="country">
+            <mat-option [value]="item.countryName" *ngFor="let item of countryList">{{ item.countryName }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field hideRequiredMarker class="col_span_4">
+        <mat-label>{{ 'general.whatCanWeHelpWith' | translate }}</mat-label>
+        <textarea matInput formControlName="issueDescription" rows="4"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="col_span_4">
+        <mat-label>{{ 'general.deviceSerialNumberOptional' | translate }}</mat-label>
+        <input matInput formControlName="serialNumber" />
+        <mat-icon
+            svgIcon="sr:alert-info"
+            [inline]="false"
+            matSuffix
+            [pTooltip]="tooltipContent"
+            tooltipPosition="bottom"
+        ></mat-icon>
+        <ng-template #tooltipContent>
+            <div class="serialNumberTip">
+                <span>{{ 'general.howToFindYourSerialNumber' | translate }}</span>
+                <span>{{ 'general.theBarcodeOnEitherTheBoxOrTheBackOfTheDevice' | translate }}</span>
+            </div>
+        </ng-template>
+    </mat-form-field>
+
+    <mat-form-field class="col_span_4">
+        <mat-label>{{ 'general.rayWareCloudOrDesktopOptional' | translate }}</mat-label>
+        <mat-select formControlName="raywareType">
+            <mat-option value="cloud">{{ 'general.cloud' | translate }}</mat-option>
+            <mat-option value="desktop">{{ 'general.desktop' | translate }}</mat-option>
+            <mat-option value="cloudAndDesktop">{{ 'general.cloudAndDesktop' | translate }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col_span_4">
+        <mat-label>{{ 'general.resinUsedOptional' | translate }}</mat-label>
+        <input matInput formControlName="resinType" />
+    </mat-form-field>
+
+    <mat-form-field class="col_span_4">
+        <mat-label>{{ 'general.preexistingTicketNumberOptional' | translate }}</mat-label>
+        <input matInput formControlName="existingTicket" />
+    </mat-form-field>
+</form>
+
+<div class="buttons-container">
+    <p-button [outlined]="true" [rounded]="true" (onClick)="cancel()">
+        <span>{{ 'general.cancel' | translate }}</span>
+    </p-button>
+    <p-button severity="primary" [rounded]="true" (onClick)="submit()" [disabled]="!ticketForm.valid">
+        {{ 'general.submit' | translate }}
+    </p-button>
+</div>

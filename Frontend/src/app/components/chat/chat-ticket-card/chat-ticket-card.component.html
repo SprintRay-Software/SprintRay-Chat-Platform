@@ -1,0 +1,38 @@
+<div class="chat-ticket-card">
+    <div *ngIf="!submited" class="submit-ticket">
+        <div class="submit-ticket-content">
+            <span class="title">{{ 'general.yourIssueRequiresFurtherInvestigation' | translate }}</span>
+            <span class="subtitle">
+                {{ 'general.pleaseFillOutCustomerSupportTicketAndAnAgentWillGetInTouch' | translate }}
+            </span>
+        </div>
+        <p-button severity="primary" [rounded]="true" (onClick)="showTicketDialog(true)">
+            <div>
+                <mat-icon svgIcon="sr:contact-support" [inline]="false"></mat-icon>
+                <span>{{ 'general.submitTicket' | translate }}</span>
+            </div>
+        </p-button>
+    </div>
+
+    <div *ngIf="submited" class="success-ticket">
+        <mat-icon svgIcon="sr:success" [inline]="false"></mat-icon>
+        <span class="title">{{ 'general.success' | translate }}</span>
+        <span class="subtitle">{{ 'general.yourSupportTicketHasBeenSubmittedSuccessfully' | translate }}</span>
+    </div>
+</div>
+
+<p-dialog
+    *ngIf="submitDialog"
+    [header]="'general.submitTicket' | translate"
+    [modal]="true"
+    [(visible)]="submitDialog"
+    [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '526px': '90vw' }"
+>
+    <sr-submit-ticket
+        [me]="me"
+        [userProfile]="userProfile"
+        [conversationId]="conversationId"
+        (closeTicketEvent)="showTicketDialog($event)"
+    ></sr-submit-ticket>
+</p-dialog>

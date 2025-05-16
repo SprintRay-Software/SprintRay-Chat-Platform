@@ -1,0 +1,22 @@
+@mixin base_custom_button() {
+    box-shadow: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 171.429% */
+    letter-spacing: 0.5px;
+    height: 40px;
+
+    .mat-icon {
+        height: 20px !important;
+        width: 20px !important;
+    }
+
+    & > span {
+        line-height: 24px;
+        height: 24px;
+    }
+}

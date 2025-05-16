@@ -1,0 +1,75 @@
+<div class="chat-message__container" [ngClass]="{ 'chat-message__container--me': isMe }" *ngIf="message">
+    <div class="chat-message__metadata">
+        <div class="chat-message__metadata-avatar d-inline-flex align-items-center">
+            <ng-container
+                *ngIf="messageUser"
+                [ngTemplateOutlet]="avatarTmpl"
+                [ngTemplateOutletContext]="{
+                    letters: messageUser.username | initials,
+                    image: messageUser | messageUserAvatar: isAiBot | async,
+                }"
+            ></ng-container>
+
+            <ng-template #avatarTmpl let-image="image" let-letters="letters">
+                <p-avatar
+                    size="normal"
+                    class="d-inline-flex align-items-center chat-message__metadata-avatar"
+                    [label]="image ? undefined : letters"
+                    shape="circle"
+                    [image]="image"
+                />
+            </ng-template>
+        </div>
+
+        <div class="chat-message__metadata-name">
+            {{ isMe ? ('general.you' | translate) : messageUser?.username }}
+        </div>
+
+        <div *ngIf="!showLoading" class="chat-message__metadata-timestamp">
+            {{ message.createdAt! | messageDate: 'EEEE HH:mm' }}
+        </div>
+
+        <div class="chat-message__metadata-loading d-inline-flex align-items-center" *ngIf="showLoading">
+            <sr-spinner [size]="20" />
+        </div>
+    </div>
+
+    <div
+        class="chat-message__content"
+        [ngClass]="{
+            'chat-message__content--error': !!error,
+        }"
+        *ngIf="message.content"
+    >
+        <div *ngIf="!error" [innerHTML]="message.content | decodeURI | extractAnchorElements | safe: 'html'"></div>
+        <div *ngIf="error" class="chat-message__content__error-container">
+            <mat-icon
+                class="d-inline-flex justify-content-center align-items-center"
+                style="width: 20px; height: 20px"
+                svgIcon="sr:error"
+            ></mat-icon>
+            <span>{{ errorContent }}</span>
+        </div>
+    </div>
+
+    <ng-container *ngIf="message.metadata?.ai?.references">
+        <div class="chat-message__extra">
+            <sr-chat-bot-references-list [data]="message.metadata!.ai!.references ?? []" />
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="error">
+        <div class="chat-message__extra">
+            <p-button
+                [outlined]="true"
+                styleClass="p-button-pill p-button-outline-white chat-message__extra__resubmit-btn"
+                (onClick)="resubmitLastMessage.emit(message)"
+                [disabled]="disableResubmitLastMessage ?? false"
+            >
+                <span class="text-white">
+                    {{ 'general.resubmitLastMessage' | translate }}
+                </span>
+            </p-button>
+        </div>
+    </ng-container>
+</div>

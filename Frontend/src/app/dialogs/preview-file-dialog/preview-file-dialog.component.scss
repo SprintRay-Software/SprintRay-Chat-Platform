@@ -1,0 +1,71 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
+.preview-file-dialog {
+    &__head {
+        height: 72px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &-file-info-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            &__icon {
+                border-radius: 4px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #ffffff14;
+            }
+
+            &__body {
+                & > div {
+                    height: 20px;
+                    line-height: 20px;
+                }
+
+                &__name {
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 500;
+                    color: white;
+                }
+
+                &__desc {
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 400;
+                    color: rgba(255, 255, 255, 0.65);
+                }
+            }
+        }
+
+        &__actions-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+
+    &__container {
+        height: 100%;
+    }
+
+    &__body-container {
+        height: 100%;
+    }
+
+    &__pdf-frame {
+        height: 100%;
+        border: none;
+        width: 100%;
+    }
+}

@@ -1,0 +1,57 @@
+@import './_button-mixins';
+
+@layer sprint-ray {
+    .p-button {
+        font-size: 14px;
+        padding: 8px 16px;
+        font-weight: 400;
+
+        &.p-button-primary {
+            background: #c03;
+            color: #fff;
+            opacity: 0.8;
+            border: 1px solid #c03;
+
+            &:hover,
+            &:active {
+                opacity: 1;
+            }
+        }
+
+        &.p-button-danger {
+            &,
+            &.p-button-outlined {
+                color: #cc0033;
+            }
+        }
+
+        &:disabled {
+            border-color: transparent;
+        }
+
+        &.p-button-rounded {
+            border-radius: 3px;
+        }
+
+        &.p-button-pill {
+            border-radius: 2rem;
+        }
+
+        &.p-button-outline-white {
+            @include base_custom_button();
+
+            background: transparent;
+            border: 1px solid #f7f8fa;
+            color: #f7f8fa;
+        }
+
+        &.p-button-filled-black {
+            @include base_custom_button();
+
+            background: #2b2b2b;
+            border: 1px solid #ffffff14;
+            color: #f7f8fa;
+            font-size: 12px;
+        }
+    }
+}

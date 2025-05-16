@@ -1,0 +1,71 @@
+@import '../../../../styles/mixins';
+
+.chat-callback-card {
+    @include display-grid();
+    grid-template-columns: minmax(0, 1fr);
+    padding: 32px;
+    border-radius: 8px;
+    border: 1px solid #ffffff1f;
+    background: #191919;
+    color: #fff;
+
+    .callback-ticket {
+        padding-right: 24px;
+        @include display-grid(24px);
+        grid-template-columns: minmax(0, 1fr) 161px;
+
+        &-content {
+            @include display-grid(12px, unset, unset);
+        }
+
+        .title {
+            @include display-grid(8px);
+            @include set-font(500, 20px, 26px);
+            grid-template-columns: max-content minmax(0, 1fr);
+
+            mat-icon {
+                width: 26px;
+                height: 26px;
+                display: flex;
+                align-self: flex-start;
+            }
+        }
+
+        .subtitle {
+            color: #ffffffa6;
+            @include set-font(400, 14px, 20px);
+        }
+
+        ::ng-deep p-button button {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .callback-success {
+        justify-self: center;
+        @include set-font(500, 14px, 20px);
+        text-align: center;
+    }
+}
+
+@media (max-width: 750px) {
+    .chat-callback-card {
+        padding: 24px;
+        .callback-ticket {
+            padding: 0;
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
+
+:host ::ng-deep .p-dialog {
+    background: #262626;
+
+    .p-dialog-header {
+        padding-bottom: 0;
+    }
+    .p-dialog-content {
+        padding: 0;
+    }
+}

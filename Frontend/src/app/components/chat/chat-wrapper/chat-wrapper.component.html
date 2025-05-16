@@ -1,0 +1,91 @@
+<div class="chat-wrapper__container">
+    <div class="chat-wrapper__messages-container" #messagesContainerEl>
+        <div
+            *ngFor="let iMessage of messages; index as idx"
+            class="chat-wrapper__message-item-container"
+            [attr.id]="'message-item__' + iMessage.id"
+        >
+            <sr-chat-message
+                [message]="iMessage"
+                [messageUser]="messageUsers?.[iMessage.sender ?? '-1']"
+                [isMe]="iMessage.sender === me?.sub"
+                [isAiBot]="iMessage.sender === aiBotMetadata.userId"
+                [disableResubmitLastMessage]="idx !== messages!.length - 1 || chatSessionEnded"
+                (resubmitLastMessage)="onResubmitLastMessage($event)"
+            />
+        </div>
+        <div *ngIf="isWaitingAiResponse" class="chat-wrapper__message-item-container">
+            <sr-chat-message
+                [message]="waitingAiResponseMessage"
+                [messageUser]="messageUsers?.[aiBotMetadata.userId ?? '-1']"
+                [isMe]="false"
+                [isAiBot]="true"
+                [showLoading]="true"
+            />
+        </div>
+
+        <div *ngIf="!isLoading && !messages?.length" class="h-100 d-flex align-items-center justify-content-center">
+            <sr-chat-land />
+        </div>
+
+        <div class="chat-wrapper__messages-container-card">
+            <sr-chat-ticket-card
+                *ngIf="showSupportTicket"
+                [me]="me"
+                [userProfile]="userProfile"
+                [conversationId]="conversationId"
+                [submited]="supportTicketSubmited"
+            ></sr-chat-ticket-card>
+            <sr-chat-callback-card
+                *ngIf="showScheduleCallback"
+                [me]="me"
+                [conversationId]="conversationId"
+                [supportTicket]="supportTicketData"
+                [scheduledDate]="scheduleCallbackDate"
+                [submited]="scheduleCallbackSubmited"
+            ></sr-chat-callback-card>
+        </div>
+    </div>
+
+    <div *ngIf="!chatSessionEnded" class="chat-wrapper__message-input-area">
+        <div class="chat-wrapper__message-input-container">
+            <div class="chat-wrapper__message-input-container--textarea">
+                <textarea
+                    #messageInputBox
+                    pInputTextarea
+                    variant="filled"
+                    [autoResize]="true"
+                    [placeholder]="'general.writeMessage' | translate"
+                    (keydown.enter)="$event.preventDefault(); this.createMessage()"
+                    [(ngModel)]="messageContent"
+                    [maxlength]="500"
+                    [disabled]="disableMessageInput"
+                    [autofocus]="true"
+                ></textarea>
+            </div>
+
+            <div class="chat-wrapper__message-input-actions-container">
+                <p-button
+                    severity="primary"
+                    [rounded]="true"
+                    (onClick)="createMessage()"
+                    [disabled]="disableSendButton"
+                >
+                    <div class="d-inline-flex gap-2 align-items-center">
+                        <span>{{ 'general.send' | translate }}</span>
+
+                        <sr-spinner *ngIf="isCreatingMessage" color="inherit" />
+                        <mat-icon *ngIf="!isCreatingMessage" class="icon left-icon">send</mat-icon>
+                    </div>
+                </p-button>
+            </div>
+        </div>
+        <div class="chat-wrapper__message-input-tip">
+            <p>{{ 'messages.thisIsBetaFeature' | translate }}</p>
+        </div>
+    </div>
+
+    <div *ngIf="chatSessionEnded">
+        <sr-chat-session-inactive (startNewChat)="startNewChat()" />
+    </div>
+</div>

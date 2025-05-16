@@ -1,0 +1,531 @@
+# noinspection GraphQLMissingType,GraphQLUnresolvedReference
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+type AiModelDetectResult {
+    AIDetectType: String
+    ID: String
+    OriginAIDetectType: String
+}
+
+type AiNightGuardProgress @aws_iam @aws_oidc {
+    id: String
+    progress: Int
+    status: Int
+    treatmentId: String
+}
+
+type ChatBot @aws_iam @aws_oidc {
+    action: String
+    chatId: String
+    status: String
+    options: ChatBotOptions
+    isSentFromUser: Boolean
+    references: [ChatBotReference]
+    error: ChatBotError
+    humanNeeded: Boolean
+}
+
+type SupportTicket {
+    firstName: String
+    lastName: String
+    company: String
+    emailAddress: String
+    phoneNumber: String
+    countryCode: String
+    country: String
+    issueDescription: String
+    serialNumber: String
+    raywareType: String
+    resinType: String
+    existingTicket: String
+}
+
+type SupportTicketResult @aws_iam @aws_oidc {
+    status: String!
+    message: String
+}
+
+type ChatBotReference @aws_iam @aws_oidc {
+    title: String
+    link: String
+    type: String!
+    file: ChatBotFile
+}
+
+type ChatBotError @aws_iam @aws_oidc {
+    type: String!
+    message: String!
+}
+
+type ChatBotFile @aws_iam @aws_oidc {
+    name: String!
+    size: Float
+    downloadLink: String
+}
+
+input ChatBotInput {
+    action: String
+    chatId: String
+    status: String
+    options: ChatBotOptionsInput
+    isSentFromUser: Boolean
+}
+
+type ChatBotOptions {
+    category: [String]
+    product: [String]
+    setup_confirm: [String]
+}
+
+input ChatBotOptionsInput {
+    category: [String]
+    product: [String]
+    setup_confirm: [String]
+}
+
+type Conversation {
+    #   The Conversation's timestamp.
+    createdAt: String
+    #   A unique identifier for the Conversation.
+    id: ID!
+    #   The Conversation's messages.
+    messages(after: String, first: Int): MessageConnection
+    #   The Conversation's name.
+    name: String!
+    #  	TreatmentId
+    treatmentId: String!
+}
+
+type ConverstationsConnection {
+    conversations: [Conversation]
+    nextToken: String
+}
+
+type ImportData {
+    DATA_TYPE: Int!
+    ERROR_MSG: String
+    IMPORT_ID: Int!
+    ITEM_ID: Int!
+    RECORD_STATUS: Int
+}
+
+type Message @aws_iam @aws_oidc {
+    #   The author object. Note: `authorId` is only available because we list it in `extraAttributes` in `Conversation.messages`
+    author: User
+    #   The message content.
+    content: String!
+    #   The id of the Conversation this message belongs to. This is the table primary key.
+    conversationId: ID!
+    #   The message timestamp. This is also the table sort key.
+    createdAt: String
+    hasFiles: Boolean
+    #   Generated id for a message -- read-only
+    id: ID!
+    #   Flag denoting if this message has been accepted by the server or not.
+    isSent: Boolean
+    messageType: Int
+    recipient: User
+    sender: String
+    metadata: MessageMetadata
+}
+
+type MessageConnection {
+    messages: [Message]
+    nextToken: String
+}
+
+type MessageMetadata @aws_iam @aws_oidc {
+    ai: ChatBot
+    supportTicket: SupportTicket
+    supportTicketResult: SupportTicketResult
+}
+
+input SupportTicketInput {
+    firstName: String
+    lastName: String
+    company: String
+    emailAddress: String
+    phoneNumber: String
+    countryCode: String
+    country: String
+    issueDescription: String
+    serialNumber: String
+    raywareType: String
+    resinType: String
+    existingTicket: String
+}
+
+input MessageMetadataInput {
+    ai: ChatBotInput
+    supportTicket: SupportTicketInput
+}
+
+# type MessageFiles {
+######################################  messageId: ID!
+######################################  message: Message
+######################################  s3File: String!
+######################################}
+######################################type MessageFilesConnection {
+######################################  nextToken: String
+######################################  messageFiles: [MessageFiles]
+######################################}
+type Mutation {
+    #   Admin create a message in a Conversation.
+    adminCreateMessage(
+        content: String
+        conversationId: ID!
+        createdAt: String!
+        hasFiles: Boolean
+        id: ID!
+        messageType: Int
+        sender: String!
+        messageMetadata: MessageMetadataInput
+    ): Message @aws_iam @aws_oidc
+    #   Create a Conversation. Use some of the cooked in template functions for UUID and DateTime.
+    createConversation(createdAt: String, id: ID!, name: String!): Conversation
+    #   Create a message in a Conversation.
+    createMessage(
+        content: String
+        conversationId: ID!
+        createdAt: String!
+        hasFiles: Boolean
+        id: ID!
+        messageType: Int
+        messageMetadata: MessageMetadataInput
+    ): Message @aws_iam @aws_oidc
+    #   Put a single value of type 'User'. If an item does not exist with the same key the item will be created. If there exists an item at that key already, it will be updated.
+    createUser(username: String!): User
+    #   Put a single value of type 'UserConversations'. If an item does not exist with the same key the item will be created. If there exists an item at that key already, it will be updated.
+    createUserConversations(conversationId: ID!, userId: ID!): UserConversations
+    #  Update conversation
+    publishConversationUpdate(id: ID!): Conversation @aws_iam @aws_oidc
+    #  Update user platforms
+    publishUserPlatformJobUpdate(platformJobId: String, userId: String!): UserPlatformJob @aws_iam @aws_oidc
+    #  Update AI Night Guard Progress
+    putAiNightGuardProgress(id: String!, progress: Int!, status: Int, treatmentId: String): AiNightGuardProgress
+        @aws_iam
+        @aws_oidc
+    #  Update data insert records
+    putImportDataInsert(dataType: Int!, errorMsg: String, importId: Int!, itemId: Int!, recordStatus: Int): ImportData
+        @aws_iam
+        @aws_oidc
+    putNewDeviceLoginMessage(DeviceId: String!, OfficeId: String!): NewDeviceLoginMessage @aws_iam @aws_oidc
+    #  Update platform job algorithm logs
+    putPlatformJobLog(
+        algorithm: String!
+        errorCode: String
+        messageId: String
+        platformJobId: String!
+        status: Int!
+        timestamp: Long
+    ): PlatformJobLog @aws_iam @aws_oidc
+    #  Update print job status logs
+    putPrintJobStatusLog(
+        appKey: String!
+        deviceId: String!
+        jobId: String!
+        jobStatusId: Int!
+        layerThickness: Int!
+        percentComplete: Float!
+        platformId: String
+        printName: String
+        printRemainingMinutes: Int
+        printSource: String!
+        printTotalMinutes: Int!
+        resinName: String!
+        timestamp: Long
+    ): PrintJobStatusLog @aws_iam @aws_oidc
+    #   Update or create printer status
+    putPrinterStatus(
+        platformType: Int
+        printJob: PrintJobInput
+        printerId: ID!
+        printerPlatformType: Int
+        printerStatus: String!
+        printerStatusName: String!
+        printerTimestamp: Int!
+        remainingMins: Int!
+        resinId: String
+        resinIdAssigned: String
+        resinName: String
+        resinNameAssigned: String
+        totalMins: Int!
+        extraPrinterStatus: String
+    ): PrinterStatus @aws_iam
+    #  Update Treatment Scan Files AI Detect Result
+    putTreatmentScanFilesAIDetectResult(id: String!, result: String!): TreatmentScanFilesAIDetectResult
+        @aws_iam
+        @aws_oidc
+}
+
+type NewDeviceLoginMessage {
+    DeviceId: String
+    OfficeId: String
+}
+
+type PlatformJobLog @aws_iam @aws_oidc {
+    ALGORITHM: String
+    ERROR_CODE: String
+    ID: ID!
+    PLATFORM_JOB_ID: String
+    QUEUE_MESSAGE_ID: String
+    STATUS: Int
+    TIMESTAMP: Long
+}
+
+type PrintJob @aws_cognito_user_pools @aws_iam @aws_oidc {
+    internalJobId: String
+    jobGuid: String
+    layerThickness: Int
+    printName: String
+    printerModel: String
+    resinName: String
+    resinVolume: Float
+    versionNumber: String
+}
+
+type PrintJobStatusLog @aws_cognito_user_pools @aws_iam @aws_oidc {
+    APP_KEY: String!
+    DEVICE_ID: String!
+    ID: ID!
+    JOB_ID: String!
+    JOB_STATUS_ID: Int!
+    LAYER_THICKNESS: Int!
+    PERCENT_COMPLETE: Float!
+    PLATFORM_ID: String
+    PRINT_NAME: String
+    PRINT_REMAINING_MINUTES: Int
+    PRINT_SOURCE: String!
+    PRINT_TOTAL_MINUTES: Int!
+    RESIN_NAME: String!
+    TIMESTAMP: Long!
+}
+
+type PrinterLastOnlineTime {
+    PRINTER_ID: ID!
+    PRINTER_TIMESTAMP: Int
+}
+
+type PrinterStatus @aws_cognito_user_pools @aws_iam @aws_oidc {
+    PLATFORM_TYPE: Int
+    PRINTER_ID: ID!
+    PRINTER_LAST_ONLINE_TIME(printerId: ID!): PrinterLastOnlineTime
+    PRINTER_PLATFORM_TYPE: Int
+    PRINTER_STATUS: String
+    PRINTER_STATUS_NAME: String
+    PRINTER_TIMESTAMP: Int
+    PRINT_JOB: PrintJob
+    REMAINING_MINS: Int
+    RESIN_ID: String
+    RESIN_ID_ASSIGNED: String
+    RESIN_NAME: String
+    RESIN_NAME_ASSIGNED: String
+    TOTAL_MINS: Int
+    EXTRA_PRINTER_STATUS: String
+}
+
+type PrinterStatusBatchResult {
+    PLATFORM_TYPE: Int
+    PRINTER_ID: ID!
+    PRINTER_LAST_ONLINE_TIME: Int
+    PRINTER_PLATFORM_TYPE: Int
+    PRINTER_STATUS: String
+    PRINTER_STATUS_NAME: String
+    PRINTER_TIMESTAMP: Int
+    PRINT_JOB: PrintJob
+    REMAINING_MINS: Int
+    RESIN_ID: String
+    RESIN_ID_ASSIGNED: String
+    RESIN_NAME: String
+    RESIN_NAME_ASSIGNED: String
+    TOTAL_MINS: Int
+    EXTRA_PRINTER_STATUS: String
+}
+
+type PrinterStatusesConnection {
+    nextToken: String
+    printerStatuses: [PrinterStatus]
+}
+
+type Query {
+    #   Scan through all values of type 'Message'. Use the 'after' and 'before' arguments with the 'nextToken' returned by the 'MessageConnection' result to fetch pages.
+    allMessage(after: String, conversationId: ID!, first: Int): [Message]
+    #   Scan through all values of type 'MessageConnection'. Use the 'after' and 'before' arguments with the 'nextToken' returned by the 'MessageConnectionConnection' result to fetch pages.
+    allMessageConnection(after: String, conversationId: ID!, first: Int): MessageConnection
+    allMessageFrom(after: String, conversationId: ID!, first: Int, sender: String!): [Message]
+    #   Scan through all values of type 'User'. Use the 'after' and 'before' arguments with the 'nextToken' returned by the 'UserConnection' result to fetch pages.
+    allUser(after: String, first: Int): [User]
+    batchGetPrinterStatus(printerIds: [ID]!): [PrinterStatusBatchResult]
+    #  Get users participating in a conversation.
+    conversationUsers(conversationId: String!): [UserConversations]
+    getAiModelDetect(id: String!): AiModelDetectResult
+    #  Get AI NightGuard progresss by jobId
+    getAiNightGuardProgress(id: String!): AiNightGuardProgress
+    getConversationUpdates(id: ID!): Conversation
+    getImportData(dataType: Int!, importId: Int!): [ImportData]
+    getNewDeviceLoginMessage(OfficeId: String!): [NewDeviceLoginMessage]
+    #  Get platform statuses by id
+    getPlatformJobLogs(limit: Int, platformJobId: String!, scanIndexForward: Boolean): [PlatformJobLog]
+    getPrintJobStatusLogs(deviceId: String!): [PrintJobStatusLog]
+    #   Get printer statuses by id
+    getPrinterStatus(printerId: ID!): PrinterStatus
+    #  Get Treatment Scan Files AI Detect Result by treatmentId
+    getTreatmentScanFilesAIDetectResult(id: String!): TreatmentScanFilesAIDetectResult
+    #   Get user by id
+    getUser(cognitoId: ID!): User
+    #  Get user platform job updates
+    getUserPlatformJobUpdates(userId: String!): [UserPlatformJob]
+    #   Get my user.
+    me: User
+}
+
+type Subscription {
+    subscribeToAiNightGuardProgress(id: String!): AiNightGuardProgress
+        @aws_iam
+        @aws_oidc
+        @aws_subscribe(mutations: ["putAiNightGuardProgress"])
+    subscribeToConversationUpdates(id: ID!): Conversation
+        @aws_iam
+        @aws_oidc
+        @aws_subscribe(mutations: ["publishConversationUpdate"])
+    subscribeToImportData(DATA_TYPE: Int!, IMPORT_ID: Int!): ImportData
+        @aws_iam
+        @aws_oidc
+        @aws_subscribe(mutations: ["putImportDataInsert"])
+    subscribeToNewDeviceLoginMessageUpdates(OfficeId: String!): NewDeviceLoginMessage
+        @aws_iam
+        @aws_oidc
+        @aws_subscribe(mutations: ["putNewDeviceLoginMessage"])
+    #   Subscribes to all new messages in a given Conversation.
+    subscribeToNewMessage(conversationId: ID!): Message
+        @aws_subscribe(mutations: ["createMessage", "adminCreateMessage"])
+    subscribeToNewUCs(userId: ID!): UserConversations @aws_subscribe(mutations: ["createUserConversations"])
+    subscribeToNewUsers: User @aws_subscribe(mutations: ["createUser"])
+    subscribeToPlatformJobLogs(PLATFORM_JOB_ID: String!): PlatformJobLog
+        @aws_iam
+        @aws_oidc
+        @aws_subscribe(mutations: ["putPlatformJobLog"])
+    subscribeToPrintJobStatusLogs(DEVICE_ID: String!): PrintJobStatusLog
+        @aws_iam
+        @aws_oidc
+        @aws_subscribe(mutations: ["putPrintJobStatusLog"])
+    subscribeToPrinterStatusUpdate(PRINTER_ID: ID!): PrinterStatus @aws_subscribe(mutations: ["putPrinterStatus"])
+    subscribeToTreatmentScanFilesAIDetectResult(id: String!): TreatmentScanFilesAIDetectResult
+        @aws_iam
+        @aws_oidc
+        @aws_subscribe(mutations: ["putTreatmentScanFilesAIDetectResult"])
+    subscribeToUserPlatformJobUpdates(userId: String!): UserPlatformJob
+        @aws_iam
+        @aws_oidc
+        @aws_subscribe(mutations: ["publishUserPlatformJobUpdate"])
+}
+
+type TreatmentScanFilesAIDetectResult @aws_iam @aws_oidc {
+    id: String!
+    result: String!
+}
+
+type User {
+    #   A unique identifier for the user.
+    cognitoId: ID!
+    #   A user's enrolled Conversations. This is an interesting case. This is an interesting pagination case.
+    conversations(after: String, first: Int): UserConverstationsConnection
+    #   Generated id for a user. read-only
+    id: ID!
+    #   Get a users messages by querying a GSI on the Messages table.
+    messages(after: String, first: Int): MessageConnection
+    #  is the user registered?
+    registered: Boolean
+    #   The username
+    username: String!
+}
+
+type UserConversations {
+    associated: [UserConversations]
+    conversation: Conversation
+    conversationId: ID!
+    user: User
+    userId: ID!
+}
+
+type UserConverstationsConnection {
+    nextToken: String
+    userConversations: [UserConversations]
+}
+
+type UserPlatformJob {
+    platformJobId: String
+    userId: String!
+}
+
+input PrintJobInput {
+    internalJobId: String
+    jobGuid: String
+    layerThickness: Int
+    printName: String
+    printerModel: String
+    resinName: String
+    resinVolume: Float
+    versionNumber: String
+}
+
+input TableBooleanFilterInput {
+    eq: Boolean
+    ne: Boolean
+}
+
+input TableFloatFilterInput {
+    beginsWith: Float
+    between: [Float]
+    contains: Float
+    eq: Float
+    ge: Float
+    gt: Float
+    le: Float
+    lt: Float
+    ne: Float
+    notContains: Float
+}
+
+input TableIDFilterInput {
+    beginsWith: ID
+    between: [ID]
+    contains: ID
+    eq: ID
+    ge: ID
+    gt: ID
+    le: ID
+    lt: ID
+    ne: ID
+    notContains: ID
+}
+
+input TableIntFilterInput {
+    beginsWith: Int
+    between: [Int]
+    contains: Int
+    eq: Int
+    ge: Int
+    gt: Int
+    le: Int
+    lt: Int
+    ne: Int
+    notContains: Int
+}
+
+input TableStringFilterInput {
+    beginsWith: String
+    between: [String]
+    contains: String
+    eq: String
+    ge: String
+    gt: String
+    le: String
+    lt: String
+    ne: String
+    notContains: String
+}

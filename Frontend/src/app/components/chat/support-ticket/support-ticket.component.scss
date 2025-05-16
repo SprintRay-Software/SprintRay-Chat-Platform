@@ -1,0 +1,227 @@
+@import '../../../../styles/mixins';
+
+.subTitle {
+    @include subtitle;
+}
+
+.form {
+    @include display-grid(16px);
+    grid-row-gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 30px 0 0;
+
+    ::ng-deep mat-form-field {
+        .mat-mdc-text-field-wrapper {
+            background: #ffffff14;
+        }
+        .mat-mdc-select-arrow {
+            color: #ffffffa6;
+        }
+
+        .mat-mdc-select {
+            color: #fff;
+            @include set-font(400, 16px, 24px);
+        }
+
+        .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+            .mdc-text-field__input {
+                color: #f44336;
+            }
+
+            &:not(.mdc-text-field--invalid) {
+                .mdc-floating-label {
+                    color: #ffffffa6;
+                }
+                .mdc-text-field__input {
+                    color: #fff;
+                    caret-color: #fff;
+                    @include set-font(400, 16px, 24px);
+                }
+                .mdc-line-ripple {
+                    &:after,
+                    &:before {
+                        border-bottom-color: #535455;
+                    }
+                }
+            }
+        }
+    }
+
+    &-item {
+        padding: 9px 12px 7px 12px;
+        background: #ffffff14;
+        border-radius: 4px 4px 0 0;
+        border-bottom: 1px solid #535455;
+        min-height: 56px;
+        @include display-grid(3px, center, unset);
+
+        .float-label {
+            height: 100%;
+            position: relative;
+
+            label,
+            input,
+            p-inputmask {
+                position: absolute;
+            }
+
+            input,
+            p-inputmask {
+                bottom: 0;
+                z-index: 1;
+            }
+
+            label {
+                top: 12px;
+                color: #ffffffa6;
+                @include set-font(400, 16px, 16px);
+            }
+
+            input:focus ~ label,
+            input.p-filled ~ label,
+            .p-inputwrapper-focus ~ label,
+            .p-inputwrapper-filled ~ label {
+                top: 0;
+                color: #ffffffa6;
+                @include set-font(400, 12px, 12px);
+            }
+        }
+
+        ::ng-deep {
+            input:focus ~ label,
+            input.p-filled ~ label {
+                top: 0;
+                color: #ffffffa6;
+                @include set-font(400, 12px, 12px);
+            }
+
+            input,
+            textarea,
+            .p-dropdown {
+                width: 100%;
+                padding: 0;
+                color: #fff;
+                border: unset;
+                background: unset;
+                @include set-font(400, 16px, 24px);
+                box-shadow: none;
+
+                span {
+                    padding: 0;
+                }
+
+                &:enabled:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+
+    .flag {
+        img {
+            position: absolute;
+            top: 28px;
+            width: 24px;
+            height: 16px;
+        }
+        ::ng-deep .mat-mdc-select-value-text {
+            padding-left: 34px;
+        }
+    }
+
+    .pr_6 {
+        padding-right: 6px;
+    }
+
+    .col_2 {
+        @include display-grid();
+        grid-template-columns: minmax(0, 1fr) max-content;
+
+        > div {
+            height: 100%;
+            position: relative;
+        }
+    }
+
+    .col_span_1 {
+        grid-column: span 1;
+    }
+
+    .col_span_2 {
+        grid-column: span 2;
+    }
+
+    .col_span_3 {
+        grid-column: span 3;
+    }
+
+    .col_span_4 {
+        grid-column: span 4;
+    }
+
+    @media (max-width: 680px) {
+        .col_span_1,
+        .col_span_2,
+        .col_span_3 {
+            grid-column: span 4;
+        }
+    }
+}
+
+::ng-deep .p-tooltip {
+    .p-tooltip-arrow {
+        display: block;
+    }
+    .p-tooltip-text {
+        width: 278px;
+        padding: 12px;
+    }
+
+    .serialNumberTip {
+        display: flex;
+        flex-direction: column;
+        row-gap: 16px;
+
+        span:first-child {
+            color: #fff;
+            @include set-font(400, 16px, 24px);
+        }
+
+        span:last-child {
+            @include subtitle;
+        }
+    }
+}
+
+::ng-deep .mat-mdc-select-panel {
+    background-color: rgb(55 55 55) !important;
+    .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after,
+    .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+        color: #fff !important;
+    }
+}
+
+mat-option {
+    color: #ffffffa6;
+    @include set-font(400, 16px, 24px);
+}
+
+.buttons-container {
+    @include display-grid(16px);
+    grid-template-columns: repeat(2, 1fr);
+
+    ::ng-deep {
+        button {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .p-button.p-button-outlined {
+            color: #f7f8fa;
+        }
+
+        .p-button.p-button-primary {
+            border: none;
+        }
+    }
+}

@@ -1,0 +1,18 @@
+<div class="chat-reference__container">
+    <div class="chat-reference__icon-container">
+        <span class="chat-reference__icon">
+            <mat-icon [svgIcon]="'sr:' + icon" [inline]="true" />
+        </span>
+    </div>
+
+    <div class="chat-reference__body-container">
+        <div class="chat-reference__body-name-container text-nowrap">{{ name }}</div>
+        <div class="chat-reference__body-description-container">{{ description }}</div>
+    </div>
+
+    <div class="chat-reference__action-container">
+        <span class="chat-reference__action-icon-container" *ngIf="action" (click)="action.handler($event)">
+            <mat-icon [inline]="true" [svgIcon]="'sr:' + action?.icon"></mat-icon>
+        </span>
+    </div>
+</div>

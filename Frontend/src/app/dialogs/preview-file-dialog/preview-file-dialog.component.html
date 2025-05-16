@@ -1,0 +1,43 @@
+<div class="preview-file-dialog__container">
+    <div class="preview-file-dialog__head">
+        <div class="preview-file-dialog__head-file-info-container">
+            <div class="preview-file-dialog__head-file-info-container__icon">
+                <mat-icon *ngIf="icon" [svgIcon]="'sr:' + icon"></mat-icon>
+            </div>
+
+            <div class="preview-file-dialog__head-file-info-container__body" *ngIf="file">
+                <div class="preview-file-dialog__head-file-info-container__body__name">{{ file?.name }}</div>
+                <div class="preview-file-dialog__head-file-info-container__body__desc">{{ fileSize }}</div>
+            </div>
+        </div>
+
+        <div class="preview-file-dialog__head__actions-container">
+            <p-button
+                [outlined]="true"
+                styleClass="p-button-outline-white"
+                [disabled]="isDownloading"
+                (onClick)="download()"
+            >
+                <span [class]="isDownloading ? ' d-inline-flex align-items-center' : undefined">
+                    <mat-icon *ngIf="!isDownloading" [svgIcon]="'sr:download'"></mat-icon>
+                    <sr-spinner *ngIf="isDownloading" [size]="20" color="inherit" />
+                </span>
+                <span>{{ 'general.downloadFile' | translate }}</span>
+            </p-button>
+
+            <p-button styleClass="p-button-filled-black" (onClick)="exit()">
+                <span>{{ 'general.exitPreviewMode' | translate }}</span>
+                <span><mat-icon [svgIcon]="'sr:close'"></mat-icon></span>
+            </p-button>
+        </div>
+    </div>
+
+    <div class="preview-file-dialog__body-container">
+        <iframe
+            #pdfViewer
+            [style.opacity]="fileExtension === 'pdf' && file?.downloadLink ? 1 : 0"
+            [src]="file?.downloadLink ?? '' | safe: 'resourceUrl'"
+            class="preview-file-dialog__pdf-frame"
+        ></iframe>
+    </div>
+</div>

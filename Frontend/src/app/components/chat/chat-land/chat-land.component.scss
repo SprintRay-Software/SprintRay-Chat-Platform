@@ -1,0 +1,30 @@
+:host {
+    display: block;
+}
+
+.chat-land {
+    &__icon-beta {
+        width: 92px;
+        height: 57px;
+        margin: 0 auto;
+        color: white;
+    }
+
+    &__hey {
+        margin-top: 41px;
+        font-size: 20px;
+        line-height: 24px;
+        color: #ffffffa6;
+        font-weight: 300;
+        text-align: center;
+    }
+
+    &__how {
+        font-size: 34px;
+        line-height: 40px;
+        font-weight: 300;
+        color: #ffffff;
+        margin-top: 16px;
+        text-align: center;
+    }
+}

@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+@layer sprint-ray, bootstrap, primeng;
+@import '../node_modules/bootstrap/dist/css/bootstrap.css' layer(bootstrap);
+
+@import 'primeicons/primeicons.css';
+
+@import 'primeng/resources/themes/md-dark-indigo/theme.css';
+@import 'primeng/resources/primeng.css';
+@import './styles/button.scss';
+@import './styles/mixins';
+@import './styles/preview-file-dialog';
+
+/* Reset CSS */
+@layer sprint-ray {
+    //button,
+    //input {
+    //  /* CSS to Reset */
+    //}
+
+    html,
+    body {
+        color-scheme: dark;
+        height: 100%;
+        background: #0d0d0d;
+    }
+
+    :root {
+        --primary-color: #9e2836;
+    }
+}
+
+p-button div {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    span {
+        @include set-font(500, 14px, 24px);
+    }
+}

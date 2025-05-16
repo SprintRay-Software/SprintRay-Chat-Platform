@@ -1,0 +1,36 @@
+<svg
+  viewBox="0 0 240 240"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient id="linear-gradient1">
+      <stop offset="0%" stop-color="currentColor" />
+      <stop offset="100%" stop-color="currentColor" stop-opacity="1" />
+    </linearGradient>
+    <linearGradient id="linear-gradient2">
+      <stop offset="0%" stop-color="currentColor" stop-opacity="0" />
+      <stop offset="20%" stop-color="currentColor" stop-opacity="0" />
+      <stop offset="80%" stop-color="currentColor" stop-opacity="0.4" />
+      <stop offset="95%" stop-color="currentColor" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0.8" />
+    </linearGradient>
+    <circle
+      id="semi-circle"
+      cx="120"
+      cy="120"
+      r="98"
+      stroke-width="16"
+      stroke-dasharray="314 1000"
+      fill="none"
+    />
+  </defs>
+  <g>
+    <use href="#semi-circle" stroke="url('#linear-gradient1')" />
+    <use
+      href="#semi-circle"
+      stroke="url('#linear-gradient2')"
+      style=" transform: rotate(180deg); transform-origin: center"
+    />
+  </g>
+</svg>
+

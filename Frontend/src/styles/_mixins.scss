@@ -1,0 +1,23 @@
+@mixin display-grid($gap: 8px, $align-items: center, $justify-content: center) {
+    display: grid;
+    grid-gap: $gap;
+    align-items: $align-items;
+    justify-content: $justify-content;
+}
+
+@mixin set-font($font-weight: 400, $font-size: 14px, $line-height: 24px, $font-family: Roboto) {
+    font-size: $font-size;
+    font-weight: $font-weight;
+    line-height: $line-height;
+    font-family: $font-family;
+}
+
+@mixin title {
+    color: #fff;
+    @include set-font(500, 16px, 24px);
+}
+
+@mixin subtitle {
+    color: #ffffffa6;
+    @include set-font(400, 14px, 20px);
+}

@@ -1,0 +1,35 @@
+<div class="chat-callback-card">
+    <div *ngIf="!submited" class="callback-ticket">
+        <div class="callback-ticket-content">
+            <div class="title">
+                <mat-icon svgIcon="sr:support-agent" [inline]="false"></mat-icon>
+                <span>{{ 'general.doYouWantToScheduleCallBack' | translate }}</span>
+            </div>
+            <span class="subtitle">{{ 'general.letUsScheduleCallBack' | translate }}</span>
+        </div>
+
+        <p-button severity="primary" [rounded]="true" (onClick)="showScheduleDialog(true)">
+            {{ 'general.scheduleCallBack' | translate }}
+        </p-button>
+    </div>
+
+    <div *ngIf="submited" class="callback-success">
+        {{ 'general.callbackScheduledFor' | translate }} {{ scheduledDate | date: 'EEEE, d MMMM, h:mm a' }}
+    </div>
+</div>
+
+<p-dialog
+    *ngIf="scheduleDialog"
+    [header]="'general.scheduleCallBack' | translate"
+    [modal]="true"
+    [(visible)]="scheduleDialog"
+    [style]="{ height: '70vh' }"
+    [breakpoints]="{ '1199px': '75vw', '526px': '90vw' }"
+>
+    <sr-schedule-callback
+        [me]="me"
+        [supportTicket]="supportTicket"
+        [conversationId]="conversationId"
+        (closeScheduleEvent)="showScheduleDialog($event)"
+    ></sr-schedule-callback>
+</p-dialog>

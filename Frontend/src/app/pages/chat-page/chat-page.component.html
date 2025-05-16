@@ -1,0 +1,16 @@
+<div class="h-100">
+    <sr-chat-wrapper
+        [messages]="messages$ | async"
+        [me]="user$ | async"
+        [messageUsers]="messageUsers$ | async"
+        [messagesTicket]="messagesTicket$ | async"
+        [conversationId]="conversationId$ | async"
+        [disableMessageInput]="(disable$ | async) ?? false"
+        [disableSendButton]="(disable$ | async) ?? false"
+        [isCreatingMessage]="(isCreatingMessage$ | async) ?? false"
+        [isWaitingAiResponse]="(isWaitingAiResponse$ | async) ?? false"
+        [chatSessionEnded]="
+            (isInitializing$ | async) === false && (chatSessionStatus$ | async) === ChatSessionStatus.inactive
+        "
+    />
+</div>

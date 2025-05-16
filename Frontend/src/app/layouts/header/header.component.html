@@ -1,0 +1,28 @@
+<header>
+    <div class="header__container">
+        <div class="header__left">
+            <div>
+                <a [href]="dashboardLink" target="_self">
+                    <img alt="logo" src="assets/images/logo.svg" width="108" height="24" />
+                </a>
+            </div>
+
+            <div class="header__icon-home">
+                <a [href]="dashboardLink" target="_self">
+                    <mat-icon style="color: white" svgIcon="sr:header-home" [inline]="false"></mat-icon>
+                </a>
+            </div>
+        </div>
+
+        <div class="header__right">
+            <div class="header__avatar-container">
+                <p-avatar
+                    *ngIf="authenticated$ | async"
+                    shape="circle"
+                    [label]="(avatarLabel$ | async) ?? undefined"
+                    [image]="(avatarImage$ | async) ?? undefined"
+                />
+            </div>
+        </div>
+    </div>
+</header>

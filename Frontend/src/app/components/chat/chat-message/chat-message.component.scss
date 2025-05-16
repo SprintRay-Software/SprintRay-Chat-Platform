@@ -1,0 +1,101 @@
+$messageContentRadius: 8px;
+
+:host {
+    display: block;
+    color: white;
+    font-size: 14px;
+}
+
+.chat-message {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        &--me {
+            align-items: flex-end;
+
+            .chat-message__content {
+                border-radius: $messageContentRadius 0 $messageContentRadius $messageContentRadius;
+                background: #303132;
+                border-color: #303132;
+            }
+
+            .chat-message__metadata {
+                flex-direction: row-reverse;
+            }
+        }
+    }
+
+    &__metadata {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 18px;
+        font-size: 14px;
+        line-height: 20px;
+
+        &-name {
+        }
+
+        &-timestamp {
+            color: hsla(0, 0%, 100%, 0.6509803921568628);
+        }
+
+        &-loading {
+            margin-left: 16px;
+        }
+
+        &-avatar {
+            ::ng-deep {
+                .p-avatar {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+
+    &__content {
+        padding: 12px 8px;
+        border: 1px solid hsla(0, 0%, 100%, 0.12156862745098039);
+        border-radius: 0 $messageContentRadius $messageContentRadius $messageContentRadius;
+        background: #191919;
+        display: inline-flex;
+        max-width: 50vw;
+        word-break: break-word;
+        white-space: pre-wrap;
+
+        &--error {
+            background: #fc852526;
+            border: 1px solid #ee6622;
+        }
+
+        &__error-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+
+    &__extra {
+        margin-top: 16px;
+        max-width: 100%;
+    }
+}
+
+:host {
+    ::ng-deep {
+        .chat-message {
+            &__extra {
+                &__resubmit-btn {
+                    font-size: 13px !important;
+                    font-weight: 400 !important;
+                    line-height: 18px;
+                    color: #f7f8fa;
+                }
+            }
+        }
+    }
+}
